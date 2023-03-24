@@ -30,9 +30,9 @@ El equipo de trabajo DevOps estará compuesto por los siguientes desarrolladores
 
 - Reinel : Coach.
 - Alejandro : Lider.
-- David: Administrador de desarrollo.
+- Juan José: Administrador de desarrollo.
 - Estefania: Administradora de planeación.
-- Juan Jose: Administrador de calidad.
+- David: Administrador de calidad.
 - Nicolás: Administrador de soporte.
 
 ## Conclusiones
