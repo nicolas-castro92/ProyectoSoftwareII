@@ -40,3 +40,4 @@ El equipo de trabajo DevOps estará compuesto por los siguientes desarrolladores
 El proyecto de Hospitalización en casa es una iniciativa que tiene como objetivo mejorar la calidad de vida de los pacientes al permitirles recibir atención médica en casa. El equipo de trabajo DevOps está utilizando tecnologías modernas y eficientes para desarrollar una plataforma escalable, segura y fácil de usar que cumpla con los estándares de seguridad de la industria.
 
 .
+.
