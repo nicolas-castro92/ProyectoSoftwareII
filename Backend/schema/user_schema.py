@@ -9,5 +9,5 @@ class UserSchema(BaseModel):
     age: int
     phone: int
     email: str
-    password: str
+    password: Optional[str]
     address: str 
