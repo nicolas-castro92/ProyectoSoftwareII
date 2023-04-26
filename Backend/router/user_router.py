@@ -1,6 +1,5 @@
 from sqlalchemy import Table, Column
 from sqlalchemy.sql.sqltypes import Integer, String
-from sqlalchemy import Column, ForeignKey, Table
 from config.db import engine, meta_data
 
 users = Table(
