@@ -4,4 +4,5 @@ from sqlalchemy import ForeignKey
 
 class FamiliarSchema(BaseModel):
     id: Optional[int]
+    user_id: int = ForeignKey('user.id')
     alternate_phone: str
