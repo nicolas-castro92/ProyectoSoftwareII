@@ -2,7 +2,7 @@ from fastapi import APIRouter, Response
 from starlette.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 from schema.familiar_schema import FamiliarSchema
 from config.db import engine
-from model.familiar import familiar
+from model.familiar import familiars
 
 familiar = APIRouter()
 
@@ -10,7 +10,7 @@ familiar = APIRouter()
 @familiar.post("/api/familiar", status_code=HTTP_201_CREATED)
 async def create_user(data_user: FamiliarSchema):
     with engine.connect() as conn:
-        query = familiars.select().where(users.c.user_id == data_user.user_id)
+        query = familiars.select().where(familiars.c.user_id == data_user.user_id)
         result =  conn.execute(query)
         existing_user =  result.fetchone()
 
