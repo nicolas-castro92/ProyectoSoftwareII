@@ -2,7 +2,7 @@ from fastapi import APIRouter, Response
 from starlette.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 from schema.familiar_schema import FamiliarSchema
 from config.db import engine
-from model.familiar import familiar
+from model.familiar import familiars
 
 familiar = APIRouter()
 
