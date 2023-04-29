@@ -10,7 +10,7 @@ app = FastAPI()
 app.include_router(user)
 
 # INSTANCIA CASOS DE USO ITERACION 1
-app.inculde_router(medical_staff)
+app.include_router(medical_staff)
 app.include_router(familiar)
 app.include_router(patient)
 
