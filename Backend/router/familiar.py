@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from schema.familiar import FamiliarCreate, FamiliarUpdate, FamiliarView, UserFamiliarCreate, UserFamiliarView, UserFamiliarUpdate
+from schema.familiar import UserFamiliarViewAll
 from model.familiar import Familiar
 from model.user import User
 from config.database import SessionLocal
 import random
 import string
+from typing import List
 
 router = APIRouter()
 
@@ -183,3 +185,24 @@ def delete_familiar(familiar_id: int, db: Session = Depends(get_db)):
 
     return {"message": "Familiar and associated user deleted successfully"}
 
+@router.get("/get_all_familiars", response_model=List[UserFamiliarViewAll])
+def get_all_familiars(db: Session = Depends(get_db)):
+    familiars = db.query(Familiar).all()
+
+    user_familiar_views = []
+    for familiar in familiars:
+        user = db.query(User).filter(User.id == familiar.user_id).first()
+        if user:
+            user_familiar_view = UserFamiliarViewAll(
+                name=user.name,
+                last_name=user.last_name,
+                identification_card=user.identification_card,
+                age=user.age,
+                phone=user.phone,
+                email=user.email,
+                address=user.address,
+                alternate_phone=familiar.alternate_phone,
+            )
+            user_familiar_views.append(user_familiar_view)
+
+    return user_familiar_views

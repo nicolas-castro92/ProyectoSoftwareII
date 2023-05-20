@@ -24,6 +24,16 @@ class UserFamiliarView(BaseModel):
     familiar_id: int
     alternate_phone: str
 
+class UserFamiliarViewAll(BaseModel):
+    name: str
+    last_name: str
+    identification_card: str
+    age: int
+    phone: str
+    email: str
+    address: str
+    alternate_phone: str
+
 class UserFamiliarUpdate(BaseModel):
     name: str
     last_name: str
