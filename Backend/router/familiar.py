@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from schema.familiar import FamiliarCreate, FamiliarUpdate, FamiliarView
+from schema.familiar import FamiliarCreate, FamiliarUpdate, FamiliarView, UserFamiliarCreate, UserFamiliarView, UserFamiliarUpdate
 from model.familiar import Familiar
 from model.user import User
 from config.database import SessionLocal
+import random
+import string
 
 router = APIRouter()
 
@@ -54,3 +56,104 @@ def delete_familiar(familiar_id: int, db: Session = Depends(get_db)):
     if not deleted_count:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Familiar not found")
     return {"message": "Familiar deleted"}
+
+@router.post("/create_user_with_familiar", response_model=UserFamiliarView)
+def create_user_with_familiar(user_familiar: UserFamiliarCreate, db: Session = Depends(get_db)):
+    # Verificar si el email ya está en uso
+    if db.query(User).filter(User.email == user_familiar.email).first():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already in use")
+    
+    # Verificar si la identification_card ya está en uso
+    if db.query(User).filter(User.identification_card == user_familiar.identification_card).first():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Identification card already in use")
+
+    # Generar una contraseña aleatoria
+    password = generate_random_password()
+
+    # Crear el usuario primero
+    new_user = User(
+        name=user_familiar.name,
+        last_name=user_familiar.last_name,
+        identification_card=user_familiar.identification_card,
+        age=user_familiar.age,
+        phone=user_familiar.phone,
+        email=user_familiar.email,
+        password=password,
+        address=user_familiar.address,
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    # Crear el familiar y asignar al usuario creado
+    new_familiar = Familiar(
+        alternate_phone=user_familiar.alternate_phone,
+        user_id=new_user.id,
+    )
+    db.add(new_familiar)
+    db.commit()
+    db.refresh(new_familiar)
+
+    user_familiar_view = UserFamiliarView(
+        id=new_user.id,
+        name=new_user.name,
+        last_name=new_user.last_name,
+        identification_card=new_user.identification_card,
+        age=new_user.age,
+        phone=new_user.phone,
+        email=new_user.email,
+        password=password,
+        address=new_user.address,
+        familiar_id=new_familiar.id,
+        alternate_phone=new_familiar.alternate_phone,
+    )
+    return user_familiar_view
+
+def generate_random_password(length=5):
+    digits = string.digits
+    return ''.join(random.choice(digits) for _ in range(length))
+
+@router.put("/update_user_with_familiar/{user_id}", response_model=UserFamiliarView)
+def update_user_with_familiar(user_id: int, user_familiar: UserFamiliarUpdate, db: Session = Depends(get_db)):
+    # Obtener el usuario y el familiar existentes
+    user = db.query(User).filter(User.id == user_id).first()
+    familiar = db.query(Familiar).filter(Familiar.user_id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    if not familiar:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Familiar not found")
+
+    # Actualizar los campos del usuario
+    for field, value in user_familiar.dict(exclude={"password"}).items():
+        if field == "identification_card" and value:
+            existing_user = db.query(User).filter(User.identification_card == value).first()
+            if existing_user and existing_user.id != user_id:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Identification card already exists")
+        if field == "email" and value:
+            existing_user = db.query(User).filter(User.email == value).first()
+            if existing_user and existing_user.id != user_id:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists")
+        setattr(user, field, value)
+
+    # Actualizar los campos del familiar
+    for field, value in user_familiar.dict().items():
+        if hasattr(familiar, field) and field != "user_id":
+            setattr(familiar, field, value)
+
+    db.commit()
+
+    user_familiar_view = UserFamiliarView(
+        id=user.id,
+        name=user.name,
+        last_name=user.last_name,
+        identification_card=user.identification_card,
+        age=user.age,
+        phone=user.phone,
+        email=user.email,
+        password=user.password,
+        address=user.address,
+        familiar_id=familiar.id,
+        alternate_phone=familiar.alternate_phone,
+    )
+    return user_familiar_view
