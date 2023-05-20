@@ -15,7 +15,6 @@ class User(Base):
     password = Column(String(255))
     address = Column(String(255))
 
-    #ejemplo de una relacion que necesita llenar 2 tablas
-    #tasks = relationship("Task", back_populates="users")
+    familiars = relationship("Familiar", back_populates="users")
 
 Base.metadata.create_all(bind=engine)
