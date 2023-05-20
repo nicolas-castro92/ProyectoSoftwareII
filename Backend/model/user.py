@@ -15,6 +15,6 @@ class User(Base):
     password = Column(String(255))
     address = Column(String(255))
 
-    familiars = relationship("Familiar", back_populates="users")
+    familiars = relationship("Familiar", back_populates="user")
 
 Base.metadata.create_all(bind=engine)
