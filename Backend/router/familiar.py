@@ -157,3 +157,29 @@ def update_user_with_familiar(user_id: int, user_familiar: UserFamiliarUpdate, d
         alternate_phone=familiar.alternate_phone,
     )
     return user_familiar_view
+
+
+@router.delete("/delete_familiar/{familiar_id}")
+def delete_familiar(familiar_id: int, db: Session = Depends(get_db)):
+    # Obtener el familiar existente
+    familiar = db.query(Familiar).filter(Familiar.id == familiar_id).first()
+
+    if not familiar:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Familiar not found")
+
+    # Obtener el usuario asociado al familiar
+    user = db.query(User).filter(User.id == familiar.user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    # Eliminar el familiar
+    db.delete(familiar)
+
+    # Eliminar el usuario asociado al familiar
+    db.delete(user)
+
+    db.commit()
+
+    return {"message": "Familiar and associated user deleted successfully"}
+
