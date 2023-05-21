@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from model.user import User
 from model.medical_staff import MedicalStaff
 from schema.medical_staff import UserMedicalStaffCreate, UserMedicalStaffView
+from schema.medical_staff import UserMedicalStaffUpdate
 from config.database import SessionLocal
 import random
 import string
@@ -76,3 +77,52 @@ def create_user_with_medical_staff(user_medical_staff: UserMedicalStaffCreate, d
 def generate_random_password(length=5):
     digits = string.digits
     return ''.join(random.choice(digits) for _ in range(length))
+
+
+@router.put("/update_user_with_medical_staff/{medical_staff_id}", response_model=UserMedicalStaffView)
+def update_user_with_medical_staff(medical_staff_id: int, user_medical_staff: UserMedicalStaffUpdate, db: Session = Depends(get_db)):
+    # Obtener el personal médico existente
+    medical_staff = db.query(MedicalStaff).filter(MedicalStaff.id == medical_staff_id).first()
+
+    if not medical_staff:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Medical staff not found")
+
+    # Obtener el usuario asociado al personal médico
+    user = medical_staff.user
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    # Actualizar los campos del usuario
+    for field, value in user_medical_staff.dict(exclude={"password"}).items():
+        if field == "identification_card" and value:
+            existing_user = db.query(User).filter(User.identification_card == value).first()
+            if existing_user and existing_user.id != user.id:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Identification card already exists")
+        if field == "email" and value:
+            existing_user = db.query(User).filter(User.email == value).first()
+            if existing_user and existing_user.id != user.id:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists")
+        setattr(user, field, value)
+
+    # Actualizar los campos del personal médico
+    for field, value in user_medical_staff.dict().items():
+        if hasattr(medical_staff, field) and field != "id":
+            setattr(medical_staff, field, value)
+
+    db.commit()
+
+    user_medical_staff_view = UserMedicalStaffView(
+        id=user.id,
+        name=user.name,
+        last_name=user.last_name,
+        identification_card=user.identification_card,
+        age=user.age,
+        phone=user.phone,
+        email=user.email,
+        address=user.address,
+        professional_card=medical_staff.professional_card,
+        specialty=medical_staff.specialty,
+        personal_type=medical_staff.personal_type,
+    )
+    return user_medical_staff_view

@@ -7,7 +7,6 @@ class UserFamiliarCreate(BaseModel):
     age: int
     phone: str
     email: str
-    password: str
     address: str
     alternate_phone: str
 
