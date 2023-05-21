@@ -19,7 +19,6 @@ class UserFamiliarView(BaseModel):
     age: int
     phone: str
     email: str
-    password: str
     address: str
     familiar_id: int
     alternate_phone: str

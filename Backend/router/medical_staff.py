@@ -1,14 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from config.database import get_db
 from model.user import User
 from model.medical_staff import MedicalStaff
 from schema.medical_staff import UserMedicalStaffCreate, UserMedicalStaffView
-from schema.user import UserCreate, UserView
 from config.database import SessionLocal
 import random
 import string
-from typing import List
 
 
 router = APIRouter()

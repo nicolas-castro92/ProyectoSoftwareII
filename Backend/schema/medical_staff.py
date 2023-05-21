@@ -7,7 +7,6 @@ class UserMedicalStaffCreate(BaseModel):
     age: int
     phone: str
     email: str
-    password: str
     address: str
     professional_card: str
     specialty: str
