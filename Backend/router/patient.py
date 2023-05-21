@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from model.user import User
 from model.patient import Patient
 from model.familiar import Familiar
@@ -145,8 +145,6 @@ def delete_patient(patient_id: int, db: Session = Depends(get_db)):
 
     db.commit()
 
-
-from sqlalchemy.orm import joinedload
 
 @router.get("/all_user_patient_familiar", response_model=List[UserPatientFamiliarView])
 def get_all_user_patient_familiar(db: Session = Depends(get_db)):
