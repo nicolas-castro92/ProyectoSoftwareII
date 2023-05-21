@@ -7,7 +7,7 @@ class Patient(Base):
     __tablename__ = "patients"
 
     id = Column(Integer, primary_key=True, index=True)
-    familiar_id = Column(Integer, ForeignKey("familiars.id"))
+    familiar_id = Column(Integer, ForeignKey("familiars.id"),nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"))
 
     familiar = relationship("Familiar", back_populates="patients")

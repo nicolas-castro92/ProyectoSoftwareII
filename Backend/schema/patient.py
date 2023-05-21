@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from typing import Optional
+
 
 class UserPatientViewAll(BaseModel):
     name: str
@@ -17,6 +19,8 @@ class UserPatientCreate(BaseModel):
     phone: str
     email: str
     address: str
+    familiar_id: Optional[int]
+
 
 class UserPatientView(BaseModel):
     id: int
