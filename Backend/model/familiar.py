@@ -10,6 +10,6 @@ class Familiar(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="familiars")
-    
+    patients = relationship("Patient", back_populates="familiar")
 
 Base.metadata.create_all(bind=engine)

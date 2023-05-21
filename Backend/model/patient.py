@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from model.base import Base
+from config.database import Base, engine
+
 
 class Patient(Base):
     __tablename__ = "patients"
@@ -12,3 +13,4 @@ class Patient(Base):
     familiar = relationship("Familiar", back_populates="patients")
     user = relationship("User", back_populates="patients")
     
+Base.metadata.create_all(bind=engine)
