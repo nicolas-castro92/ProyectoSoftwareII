@@ -3,10 +3,11 @@ from sqlalchemy.orm import Session
 from model.user import User
 from model.medical_staff import MedicalStaff
 from schema.medical_staff import UserMedicalStaffCreate, UserMedicalStaffView
-from schema.medical_staff import UserMedicalStaffUpdate
+from schema.medical_staff import UserMedicalStaffUpdate, UserMedicalStaffViewAll
 from config.database import SessionLocal
 import random
 import string
+from typing import List
 
 
 router = APIRouter()
@@ -151,3 +152,30 @@ def delete_medical_staff(medical_staff_id: int, db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "Medical staff and associated user deleted successfully"}
+
+
+
+@router.get("/get_all_medical_staff", response_model=List[UserMedicalStaffViewAll])
+def get_all_medical_staff(db: Session = Depends(get_db)):
+    medical_staff = db.query(MedicalStaff).all()
+
+    user_medical_staff_views = []
+    for staff in medical_staff:
+        user = db.query(User).filter(User.id == staff.user_id).first()
+        if user:
+            user_medical_staff_view = UserMedicalStaffViewAll(
+                id=staff.id,
+                name=user.name,
+                last_name=user.last_name,
+                identification_card=user.identification_card,
+                age=user.age,
+                phone=user.phone,
+                email=user.email,
+                address=user.address,
+                professional_card=staff.professional_card,
+                specialty=staff.specialty,
+                personal_type=staff.personal_type,
+            )
+            user_medical_staff_views.append(user_medical_staff_view)
+
+    return user_medical_staff_views

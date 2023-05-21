@@ -1,5 +1,17 @@
 from pydantic import BaseModel
 
+class UserMedicalStaffViewAll(BaseModel):
+    name: str
+    last_name: str
+    identification_card: str
+    age: int
+    phone: str
+    email: str
+    address: str
+    professional_card: str
+    specialty: str
+    personal_type: str
+
 class UserMedicalStaffCreate(BaseModel):
     name: str
     last_name: str
