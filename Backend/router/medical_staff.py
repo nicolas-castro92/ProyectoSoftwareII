@@ -126,3 +126,28 @@ def update_user_with_medical_staff(medical_staff_id: int, user_medical_staff: Us
         personal_type=medical_staff.personal_type,
     )
     return user_medical_staff_view
+
+
+@router.delete("/delete_medical_staff/{medical_staff_id}")
+def delete_medical_staff(medical_staff_id: int, db: Session = Depends(get_db)):
+    # Obtener el personal médico existente
+    medical_staff = db.query(MedicalStaff).filter(MedicalStaff.id == medical_staff_id).first()
+
+    if not medical_staff:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Medical staff not found")
+
+    # Obtener el usuario asociado al personal médico
+    user = medical_staff.user
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    # Eliminar el personal médico
+    db.delete(medical_staff)
+
+    # Eliminar el usuario asociado al personal médico
+    db.delete(user)
+
+    db.commit()
+
+    return {"message": "Medical staff and associated user deleted successfully"}
