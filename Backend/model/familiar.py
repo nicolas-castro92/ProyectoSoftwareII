@@ -10,5 +10,6 @@ class Familiar(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="familiars")
+    
 
 Base.metadata.create_all(bind=engine)

@@ -11,3 +11,4 @@ class Patient(Base):
 
     familiar = relationship("Familiar", back_populates="patients")
     user = relationship("User", back_populates="patients")
+    
