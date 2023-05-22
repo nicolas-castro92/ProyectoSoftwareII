@@ -16,23 +16,40 @@ def get_db():
         db.close()
              
 @personal_in_charge.post("/api/assign-medical-staff")
-def assign_medical_staff(medical_staff_id: int,patient_id: int, db: Session = Depends(get_db)):
+def assign_medical_staff(medical_staff_id: int, patient_id: int, db: Session = Depends(get_db)):
     
     # Verificar si el personal médico y el paciente existen en la base de datos
     medical_staff = db.query(MedicalStaff).filter(MedicalStaff.id == medical_staff_id).first()
     patient = db.query(Patient).filter(Patient.id == patient_id).first()
     
     if not medical_staff and not patient:
-        raise HTTPException(status_code=404, detail="Personal y Paciente no encontrado")
+        raise HTTPException(status_code=404, detail = "Personal y Paciente no encontrado")
     if not medical_staff:
-        raise HTTPException(status_code=404, detail="Personal médico no encontrado")
+        raise HTTPException(status_code=404, detail = "Personal médico no encontrado")
     if not patient:
-        raise HTTPException(status_code=404, detail="Paciente no encontrado")
+        raise HTTPException(status_code=404, detail = "Paciente no encontrado")
         
     
     # Crear la asignación en la tabla intermedia AssignedStaff
-    assigned_staff = PersonalInCharge(medical_staff_id=medical_staff_id, patient_id=patient_id)
+    assigned_staff = PersonalInCharge(medical_staff_id = medical_staff_id, patient_id = patient_id)
     db.add(assigned_staff)
     db.commit()
 
     return {"message": "Personal médico asignado exitosamente al paciente"}
+
+@personal_in_charge.delete("/api/unassign-medical-staff")
+def unassign_medical_staff(medical_staff_id: int, patient_id: int, db: Session = Depends(get_db)):
+    # Verificar si el personal médico y el paciente existen en la base de datos
+    assigned_staff = db.query(PersonalInCharge).filter(
+        PersonalInCharge.medical_staff_id == medical_staff_id,
+        PersonalInCharge.patient_id == patient_id
+    ).first()
+
+    if not assigned_staff:
+        raise HTTPException(status_code=404, detail="Asignación de personal médico a paciente no encontrada")
+
+    # Eliminar la asignación de la tabla intermedia PersonalInCharge
+    db.delete(assigned_staff)
+    db.commit()
+
+    return {"message": "Personal médico desasignado exitosamente del paciente"} 
