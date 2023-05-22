@@ -12,5 +12,7 @@ class MedicalStaff(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="medical_staff")
+    assigned_patients = relationship("PersonalInCharge", back_populates="medical_staff")
+
 
 Base.metadata.create_all(bind=engine)

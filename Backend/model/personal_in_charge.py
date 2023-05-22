@@ -6,10 +6,11 @@ class PersonalInCharge(Base):
     __tablename__ = "personal_in_charge"
 
     id = Column(Integer, primary_key=True, index=True)
-    paciente_id = Column(Integer, ForeignKey("patients.id"))
-    personal_id = Column(Integer, ForeignKey("medical_staff.id"))
+    patient_id = Column(Integer, ForeignKey("patients.id"))
+    medical_staff_id = Column(Integer, ForeignKey("medical_staff.id"))
 
-    paciente = relationship("Patient", back_populates="personal_a_cargo")
-    personal = relationship("MedicalStaff", back_populates="pacientes_a_cargo")
+    medical_staff = relationship("MedicalStaff", back_populates="assigned_patients")
+    patient = relationship("Patient", back_populates="assigned_medical_staff")
+
 
 Base.metadata.create_all(bind=engine)

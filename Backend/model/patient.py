@@ -13,4 +13,6 @@ class Patient(Base):
     familiar = relationship("Familiar", back_populates="patients")
     user = relationship("User", back_populates="patients")
     
+    assigned_medical_staff = relationship("PersonalInCharge", back_populates="patient")
+    
 Base.metadata.create_all(bind=engine)
