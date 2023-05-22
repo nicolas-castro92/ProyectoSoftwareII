@@ -3,7 +3,6 @@ from router.user import router as user_router
 from router.familiar import router as familiar_router
 from router.medical_staff import router as medical_staff_router
 from router.patient import router as patient_router
-
 app = FastAPI()
 
 # Routers
