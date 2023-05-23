@@ -1,20 +1,22 @@
-from sqlalchemy import Table, Column
-from sqlalchemy.sql.sqltypes import Integer, String
-from config.db import engine, meta_data
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from config.database import Base, engine
 
-users = Table(
-    "users",meta_data,
-    Column("id", Integer, primary_key=True),
-    Column("name",String(255),nullable=False),
-    Column("last_name",String(255),nullable=False),
-    Column("identification_card",Integer,nullable=False),
-    Column("age",Integer,nullable=False),
-    Column("phone",Integer,nullable=False),
-    Column("email", String(255),nullable=False),
-    Column("password", String(255)),
-    Column("address", String(255),nullable=False),
-)
+class User(Base):
+    __tablename__ = "users"
 
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255))
+    last_name = Column(String(255))
+    identification_card = Column(String(255), unique=True)
+    age = Column(Integer)
+    phone = Column(String(255))
+    email = Column(String(255), unique=True)
+    password = Column(String(255))
+    address = Column(String(255))
 
+    familiars = relationship("Familiar", back_populates="user")
+    medical_staff = relationship("MedicalStaff", back_populates="user")
+    patients = relationship("Patient", back_populates="user")
 
-meta_data.create_all(engine)
+Base.metadata.create_all(bind=engine)

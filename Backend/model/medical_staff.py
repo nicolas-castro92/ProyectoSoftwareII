@@ -1,19 +1,18 @@
-from sqlalchemy import Table, Column, ForeignKey
-from sqlalchemy.sql.sqltypes import Integer, String
-from config.db import engine, meta_data
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+from config.database import Base, engine
+
+class MedicalStaff(Base):
+    __tablename__ = "medical_staff"
+
+    id = Column(Integer, primary_key=True, index=True)
+    professional_card = Column(String(255))
+    specialty = Column(String(255))
+    personal_type = Column(String(255))
+    user_id = Column(Integer, ForeignKey("users.id"))
+
+    user = relationship("User", back_populates="medical_staff")
+    assigned_patients = relationship("PersonalInCharge", back_populates="medical_staff")
 
 
-#Modelo para personal medico
-medical_staffs = Table("medical_staffs",meta_data,
-              Column("id", Integer, primary_key=True),
-              Column("professional_card",Integer),
-              Column("specialty",String(255),nullable=False),
-              Column("personal_type",String(255),nullable=False),
-              Column("user_id", ForeignKey("users.id")))
-
-#Primero se debe de crear la tabla de users, ya que de lo contrario la tabla medical_staff
-#no tendrá una tabla a la cual hacer referencia para implementar la ForeignKey("user.id")
-
-
-
-meta_data.create_all(engine)
+Base.metadata.create_all(bind=engine)

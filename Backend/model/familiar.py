@@ -1,11 +1,15 @@
-from sqlalchemy import Table, Column
-from sqlalchemy.sql.sqltypes import Integer, String
-from sqlalchemy import Column, ForeignKey, Table
-from config.db import engine, meta_data
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+from config.database import Base, engine
 
-familiars = Table("familiars",meta_data,
-              Column("id",Integer, primary_key=True),
-              Column("alternate_phone",String(255),nullable=False),
-              Column("user_id", ForeignKey("users.id")))
+class Familiar(Base):
+    __tablename__ = "familiars"
 
-meta_data.create_all(engine)
+    id = Column(Integer, primary_key=True, index=True)
+    alternate_phone = Column(String(255))
+    user_id = Column(Integer, ForeignKey("users.id"))
+
+    user = relationship("User", back_populates="familiars")
+    patients = relationship("Patient", back_populates="familiar")
+
+Base.metadata.create_all(bind=engine)
