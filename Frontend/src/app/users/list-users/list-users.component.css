@@ -1,0 +1,31 @@
+.user-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .user-list th,
+  .user-list td {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .user-list th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+  
+  .user-list td {
+    background-color: #fff;
+  }
+
+  .delete {
+    background-color: red;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    padding: 8px 16px;
+  }
+  
+  

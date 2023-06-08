@@ -1,0 +1,52 @@
+.navbar-brand img {
+  /*Estilos de la barra superior*/
+  margin-right: 5px;
+  padding: 20px;
+}
+
+.navbar-logo {
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.navbar-title {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar {
+  /*Estilos de la barra lateral*/
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-content {
+  width: 80%;
+  /* Estilos adicionales para el contenido principal */
+}
+
+.sidebar button {
+  width: 200px;
+  margin-bottom: 10px;
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.sidebar button:hover {
+  background-color: darkblue;
+}

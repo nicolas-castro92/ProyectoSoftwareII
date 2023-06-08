@@ -4,7 +4,22 @@ from router.familiar import router as familiar_router
 from router.medical_staff import router as medical_staff_router
 from router.patient import router as patient_router
 from router.personal_in_charge import personal_in_charge
+
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:4200",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Routers
 app.include_router(user_router, prefix="/users", tags=["users"])

@@ -1,0 +1,32 @@
+form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  form div {
+    display: flex;
+    align-items: center;
+  }
+  
+  form div label {
+    width: 120px;
+  }
+  
+  form div input {
+    flex: 1;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  button[type="submit"] {
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
