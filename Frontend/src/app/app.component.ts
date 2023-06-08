@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ListUsersComponent } from './users/list-users/list-users.component';
 import { CreatePatientComponent } from './patients/create-patient/create-patient.component';
 import { CreateFamiliarComponent } from './familiars/create-familiar/create-familiar.component';
-
+import { CreateMedicalStaffComponent } from './medical-staff/create-medical-staff/create-medical-staff.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -23,4 +23,7 @@ export class AppComponent {
     this.componenteSeleccionado = CreatePatientComponent;
   }
 
+  registrarPersonalMedico(){
+    this.componenteSeleccionado = CreateMedicalStaffComponent;
+  }
 }
