@@ -4,18 +4,19 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-create-medical-staff',
   templateUrl: './create-medical-staff.component.html',
-  styles: [
-  ]
+  styleUrls: ['./create-medical-staff.component.css']
 })
 export class CreateMedicalStaffComponent {
   constructor(private http: HttpClient) { }
+   
+  crearPersonalMedico(event: Event) {
 
-  crearFamiliar(event: Event) {
-
+    console.log('Tipo de evento:', event.type);
+    console.log('Objeto del evento:', event);
     event.preventDefault();
 
     const form = event.target as HTMLFormElement;
-
+  
     const nombre = form['nombre'].value;
     const apellido = form['apellido'].value;
     const cedula = form['cedula'].value;
@@ -24,8 +25,8 @@ export class CreateMedicalStaffComponent {
     const correo = form['correo'].value;
     const direccion = form['direccion'].value;
     const tarjeta_profesional = form['tarjeta_profesional'].value;
-    const especialidad = form['specialty'].value;
-    const tipo_personal = form['personal_type'].value;
+    const especialidad = form['especialidad'].value;
+    const tipo_personal = form['tipo_personal'].value;
 
 
     const body = {
@@ -41,16 +42,16 @@ export class CreateMedicalStaffComponent {
       personal_type:tipo_personal
     };
 
-    this.http.post('http://localhost:8000/medical_staff/create_user_with_medical_staff_medical_staff_create_user_with_medical_staff_post', body)
+    this.http.post('http://localhost:8000/docs#/medical_staff/create_user_with_medical_staff', body)
       .subscribe(
         (response) => {
-          console.log('Usuario y familiar creados correctamente', response);
+          console.log('Usuario y Personal Medico  creados correctamente', response);
           form.reset();
         },
         (error) => {
-          console.error('Error al crear el usuario y familiar', error);
+          console.error('Error al crear el usuario y Personal Medico', error);
         }
       );
+      
   }
-
 }
