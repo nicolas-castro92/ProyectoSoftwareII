@@ -4,10 +4,12 @@ from model.user import User
 from model.medical_staff import MedicalStaff
 from schema.medical_staff import UserMedicalStaffCreate, UserMedicalStaffView
 from schema.medical_staff import UserMedicalStaffUpdate, UserMedicalStaffViewAll
+from utils.password_utils import generate_random_password, hash_password
 from config.database import SessionLocal
 import random
 import string
 from typing import List
+import hashlib
 
 
 router = APIRouter()
@@ -29,10 +31,10 @@ def create_user_with_medical_staff(user_medical_staff: UserMedicalStaffCreate, d
     # Verificar si la identification_card ya está en uso
     if db.query(User).filter(User.identification_card == user_medical_staff.identification_card).first():
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Identification card already in use")
-
     # Generar una contraseña aleatoria
     password = generate_random_password()
-
+    # Encriptar la contraseña
+    hashed_password = hash_password(password)
     # Crear el usuario primero
     new_user = User(
         name=user_medical_staff.name,
@@ -41,7 +43,7 @@ def create_user_with_medical_staff(user_medical_staff: UserMedicalStaffCreate, d
         age=user_medical_staff.age,
         phone=user_medical_staff.phone,
         email=user_medical_staff.email,
-        password=password,
+        password=hashed_password,
         address=user_medical_staff.address,
     )
     db.add(new_user)
@@ -73,11 +75,6 @@ def create_user_with_medical_staff(user_medical_staff: UserMedicalStaffCreate, d
         personal_type=new_medical_staff.personal_type,
     )
     return user_medical_staff_view
-
-
-def generate_random_password(length=5):
-    digits = string.digits
-    return ''.join(random.choice(digits) for _ in range(length))
 
 
 @router.put("/update_user_with_medical_staff/{medical_staff_id}", response_model=UserMedicalStaffView)

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from schema.familiar import FamiliarCreate, FamiliarUpdate, FamiliarView, UserFamiliarCreate, UserFamiliarView, UserFamiliarUpdate
 from schema.familiar import UserFamiliarViewAll
 from model.familiar import Familiar
+from utils.password_utils import generate_random_password, hash_password
 from model.user import User
 from config.database import SessionLocal
 import random
@@ -37,11 +38,12 @@ def create_familiar(familiar: FamiliarCreate, db: Session = Depends(get_db)):
     db.refresh(new_familiar)
     return new_familiar
 
+"""
 @router.get("/familiars", response_model=list[FamiliarView])
 def get_all_familiars(db: Session = Depends(get_db)):
     familiars = db.query(Familiar).all()
     return familiars
-
+"""
 @router.put("/familiars/{familiar_id}", response_model=FamiliarView)
 def update_familiar(familiar_id: int, familiar: FamiliarUpdate, db: Session = Depends(get_db)):
     db.query(Familiar).filter(Familiar.id == familiar_id).update(familiar.dict(exclude_unset=True))
@@ -71,7 +73,8 @@ def create_user_with_familiar(user_familiar: UserFamiliarCreate, db: Session = D
 
     # Generar una contraseña aleatoria
     password = generate_random_password()
-
+    # Encriptar la contraseña
+    hashed_password = hash_password(password)
     # Crear el usuario primero
     new_user = User(
         name=user_familiar.name,
@@ -80,7 +83,7 @@ def create_user_with_familiar(user_familiar: UserFamiliarCreate, db: Session = D
         age=user_familiar.age,
         phone=user_familiar.phone,
         email=user_familiar.email,
-        password=password,
+        password=hashed_password,
         address=user_familiar.address,
     )
     db.add(new_user)

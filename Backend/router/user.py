@@ -13,10 +13,12 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/users", response_model=list[UserView])
+
+"""@router.get("/users", response_model=list[UserView])
 def get_all_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
     return users
+"""
 
 
 @router.post("/users", response_model=UserView)
