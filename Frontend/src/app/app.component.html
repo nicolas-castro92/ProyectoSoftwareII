@@ -4,19 +4,20 @@
   </a>
   <p class="navbar-title">HOSPITALIZACION EN CASA</p>
 </nav>
-
-  <div class="container">
-    <div class="sidebar">
-      <button (click)="listarUsuarios()">Mostrar todos los Usuarios</button>
-      <button (click)="registrarFamiliar()">Registrar Familiar</button>
-      <button (click)="registrarPaciente()">Registrar Paciente</button>
-      <button (click)="registrarPersonalMedico()">Registrar Personal Medico</button>
-    </div>
-
-    <div class="main-content">
-      <!-- Contenido de donde van los componentes -->
-      <ng-container *ngIf="componenteSeleccionado">
-        <ng-container *ngComponentOutlet="componenteSeleccionado"></ng-container>
-      </ng-container>
-    </div>
+<div class="container">
+  <div class="sidebar">
+    <!-- Contenido de la barra lateral -->
+    <button (click)="listarUsuarios()">Mostrar todos los Usuarios</button>
+    <button (click)="listarPacientes()">Mostrar todos los Pacientes</button>
+    <button (click)="registrarFamiliar()">Registrar Familiar</button>
+    <button (click)="registrarPaciente()">Registrar Paciente</button>
+    <button (click)="registrarPersonalMedico()">Registrar Personal Medico</button>
   </div>
+  <div class="main-content">
+    <!-- Contenido de donde van los componentes -->
+    <ng-container *ngIf="componenteSeleccionado">
+      <ng-container *ngComponentOutlet="componenteSeleccionado"></ng-container>
+    </ng-container>
+  </div>
+</div>
+
