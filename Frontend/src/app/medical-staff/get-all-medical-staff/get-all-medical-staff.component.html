@@ -1,0 +1,34 @@
+<div class="user-list">
+    <h3>Datos Pacientes y sus familiares</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Cedula</th>
+                <th>Edad</th>
+                <th>Telefono</th>
+                <th>Correo</th>
+                <th>Direccion</th>
+                <th>Tarjeta Profesional</th>
+                <th>Especialidad</th>
+                <th>Tipo de Personal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of dataList">
+                <td>{{ item.name }}</td>
+                <td>{{ item.last_name }}</td>
+                <td>{{ item.identification_card }}</td>
+                <td>{{ item.age }}</td>
+                <td>{{ item.phone }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.address }}</td>
+                <td>{{ item.professional_card }}</td>
+                <td>{{ item.specialty }}</td>
+                <td>{{ item.personal_type }}</td>
+                <!-- <td><button (click)="eliminarPaciente(item.patient_id)">Eliminar</button></td> -->
+            </tr>
+        </tbody>
+    </table>
+</div>

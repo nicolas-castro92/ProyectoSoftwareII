@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ListUsersComponent } from './users/list-users/list-users.component';
 import { GetAllPatientsComponent } from './patients/get-all-patients/get-all-patients.component';
+import { GetAllMedicalStaffComponent } from './medical-staff/get-all-medical-staff/get-all-medical-staff.component';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { GetAllPatientsComponent } from './patients/get-all-patients/get-all-pat
     AppComponent,
     ListUsersComponent,
 
-    GetAllPatientsComponent
+    GetAllPatientsComponent,
+      GetAllMedicalStaffComponent
 
   ],
   imports: [
