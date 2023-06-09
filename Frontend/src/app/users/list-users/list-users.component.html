@@ -10,7 +10,6 @@
             <th>Telefono</th>
             <th>Correo</th>
             <th>Direccion</th>
-            <th>Eliminar</th>
         </tr>
       </thead>
       <tbody>
@@ -22,7 +21,6 @@
             <td>{{ item.phone }}</td>
             <td>{{ item.email }}</td>
             <td>{{ item.address }}</td>
-            <td><button class="delete" (click)="eliminarUsuario(item.id)">Eliminar</button></td>
         </tr>
       </tbody>
     </table>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ListUsersComponent } from './users/list-users/list-users.component';
 import { CreatePatientComponent } from './patients/create-patient/create-patient.component';
 import { CreateFamiliarComponent } from './familiars/create-familiar/create-familiar.component';
+import { GetAllPatientsComponent} from './patients/get-all-patients/get-all-patients.component';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,10 @@ export class AppComponent {
 
   registrarPaciente(){
     this.componenteSeleccionado = CreatePatientComponent;
+  }
+
+  listarPacientes(){
+    this.componenteSeleccionado = GetAllPatientsComponent;
   }
 
 }
