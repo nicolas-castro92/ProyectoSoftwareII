@@ -8,8 +8,13 @@ import { CreateMedicalStaffComponent } from './medical-staff/create-medical-staf
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent  {
   componenteSeleccionado: any;
+  sidebarVisible = false;
+
+  toggleSidebar() {
+    this.sidebarVisible = !this.sidebarVisible;
+  }
 
   listarUsuarios() {
     this.componenteSeleccionado = ListUsersComponent;
