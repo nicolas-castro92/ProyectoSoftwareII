@@ -4,14 +4,19 @@ import { CreatePatientComponent } from './patients/create-patient/create-patient
 import { CreateFamiliarComponent } from './familiars/create-familiar/create-familiar.component';
 import { GetAllPatientsComponent} from './patients/get-all-patients/get-all-patients.component';
 import { CreateMedicalStaffComponent } from './medical-staff/create-medical-staff/create-medical-staff.component';
-
+import { GetAllMedicalStaffComponent } from './medical-staff/get-all-medical-staff/get-all-medical-staff.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent  {
   componenteSeleccionado: any;
+  sidebarVisible = false;
+
+  toggleSidebar() {
+    this.sidebarVisible = !this.sidebarVisible;
+  }
 
   listarUsuarios() {
     this.componenteSeleccionado = ListUsersComponent;
@@ -27,6 +32,10 @@ export class AppComponent {
 
   listarPacientes(){
     this.componenteSeleccionado = GetAllPatientsComponent;
+  }
+
+  listarPersonalMedico(){
+    this.componenteSeleccionado = GetAllMedicalStaffComponent;
   }
 
 

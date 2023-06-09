@@ -5,6 +5,7 @@ from model.patient import Patient
 from model.familiar import Familiar
 from schema.patient import UserPatientCreate, UserPatientView
 from schema.patient import UserPatientUpdate, UserPatientViewAll, UserPatientFamiliarView
+from utils.password_utils import generate_random_password, hash_password
 from config.database import SessionLocal
 import random
 import string
@@ -49,6 +50,7 @@ def create_user_with_patient(user_patient: UserPatientCreate, db: Session = Depe
         # Generar una contraseña aleatoria
         password = generate_random_password()
         # Crear el usuario primero
+        hashed_password = hash_password(password)
         new_user = User(
             name=user_patient.name,
             last_name=user_patient.last_name,
@@ -57,7 +59,7 @@ def create_user_with_patient(user_patient: UserPatientCreate, db: Session = Depe
             phone=user_patient.phone,
             email=user_patient.email,
             address=user_patient.address,
-            password=password,
+            password=hashed_password,
             patients=[new_patient]  # Asignar el paciente al usuario
         )
 

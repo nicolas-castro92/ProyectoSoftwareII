@@ -42,7 +42,7 @@ export class CreateMedicalStaffComponent {
       personal_type:tipo_personal
     };
 
-    this.http.post('http://localhost:8000/docs#/medical_staff/create_user_with_medical_staff', body)
+    this.http.post('http://localhost:8000/medical_staff/create_user_with_medical_staff', body)
       .subscribe(
         (response) => {
           console.log('Usuario y Personal Medico  creados correctamente', response);
